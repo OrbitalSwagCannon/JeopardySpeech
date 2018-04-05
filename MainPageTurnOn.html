@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Jeopardy Thing</h2>
+
+<p id="demo"></p>
+<script>
+var xhr = new XMLHttpRequest();
+xhr.open("GET", "http://jservice.io/api/random", false);
+xhr.send();
+console.log(xhr.status)
+//Parses the JSON response.
+var obj = JSON.parse(xhr.response);
+//Puts the question and answer group together.
+var question = "Question: " + obj[0].question + ". Answer: " + obj[0].answer
+document.getElementById("demo").innerHTML = question;
+
+</script>
+</body>
+</html>
