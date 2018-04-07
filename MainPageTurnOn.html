@@ -2,20 +2,45 @@
 <html>
 <body>
 
-<h2>Jeopardy Thing</h2>
+<h2>Jeopardy! Random Question</h2>
 
 <p id="demo"></p>
-<script>
-var xhr = new XMLHttpRequest();
-xhr.open("GET", "http://jservice.io/api/random", false);
-xhr.send();
-console.log(xhr.status)
-//Parses the JSON response.
-var obj = JSON.parse(xhr.response);
-//Puts the question and answer group together.
-var question = "Question: " + obj[0].question + ". Answer: " + obj[0].answer
-document.getElementById("demo").innerHTML = question;
+<button id="DJKhaled" type="button">Another One!</button>
 
+<script>
+(function() {
+  //Checks to see when the button is clicked
+  document.getElementById("DJKhaled").addEventListener('click', makeRequest);
+  
+  //Calls the Jeopardy! API
+  var httpRequest;
+  function makeRequest() {
+    httpRequest = new XMLHttpRequest();
+    
+    if (!httpRequest) {
+      console.log('Not another one :( Cannot create an XMLHTTP instance');
+      return false;
+    }
+    httpRequest.onreadystatechange = alertContents;
+    httpRequest.open('GET', 'http://jservice.io/api/random');
+    httpRequest.send();
+	}
+  
+  //Parses the response. Otherwise throws an error
+  function alertContents() {
+    if (httpRequest.readyState === XMLHttpRequest.DONE) {
+      if (httpRequest.status === 200) {
+        console.log(httpRequest.responseText);
+		var obj = JSON.parse(httpRequest.response);
+		//Changes the question on the demo div
+		document.getElementById("demo").innerHTML = obj[0].question + ". " + obj[0].answer;
+      } else {
+        console.log('There was a problem with the request.');
+      }
+    }
+  }
+})();
 </script>
+
 </body>
 </html>
